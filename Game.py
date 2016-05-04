@@ -10,6 +10,12 @@ from kivy.uix.label import Label
 import sys
 import random
 import tweepy
+import webbrowser
+
+
+#  https://twitter.com/theharlander261
+#This is the link to the twitter page
+
 
 
 
@@ -89,33 +95,40 @@ class PongGame(Widget):
 
 
             api = tweepy.API(auth)
+            #Deletes other tweets so you can tweet again without duplication error
+            for status in tweepy.Cursor(api.user_timeline).items():
+               try:
+                   api.destroy_status(status.id)
+               except:
+                   pass
             api.update_status("Awww man I lost the game :( ")
-
-#Code I'm trying to use sort duplication error
-# for status in tweepy.Cursor(api.user_timeline).items():
- #               try:
-  #                  api.destroy_status(status.id)
-   #             except:
-    #                pass
-
-
 
 
         #Ends game by putting the ball stationary when the player hits the left side 20 times.----wins the game
         if self.player1.insectLives == 0 :
             self.serve_ball(vel=(+0, 0))
-            #These are the variables for the API Keys(Used so you can access the twiteer app)
+
+                    #These are the variables for the API Keys(Used so you can access the twiteer app)
             CONSUMER_KEY ='1FSma1ZT0UdYjs08KphdvyJIe'
             CONSUMER_SECRET ='iTNq2K2lfEQIsjVQAyH25hlZCZZb7uuv4E5CSLWP1qk8S0qxcg'
             ACCESS_KEY = '724594642713477121-7dRjl643Y5CbCKpc6sBS3UFkl0HGY9N'
             ACCESS_SECRET ='EysOPtpe7YosMKyDolessehjKVZR7WoHWjSpxW48whdjv'
 
+        #sets a variable so the handler can use the consumer key to access.
             auth = tweepy.OAuthHandler(CONSUMER_KEY,CONSUMER_SECRET)
             auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 
 
+
             api = tweepy.API(auth)
-            api.update_status("Hell Yeah I won the game :) ")
+
+            #Deletes other tweets so you can tweet again without duplication error
+            for status in tweepy.Cursor(api.user_timeline).items():
+               try:
+                   api.destroy_status(status.id)
+               except:
+                   pass
+            api.update_status("Hell yea I won the game! :) ")
 
 
 
